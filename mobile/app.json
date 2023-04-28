@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "manfred-app",
-    "slug": "manfred-app",
+    "name": "split-bill",
+    "slug": "split-bill",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,17 +16,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gabrielforster.splitbill"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gabrielforster.splitbill"
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e0d1d00f-5155-48ea-b2ab-0e85cb58a583"
+      }
+    },
+    "owner": "gabrielforster"
   }
 }

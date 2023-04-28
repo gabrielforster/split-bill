@@ -1,5 +1,5 @@
 {
-  "name": "manfred-app",
+  "name": "split-bill",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",

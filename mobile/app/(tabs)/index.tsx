@@ -1,23 +1,8 @@
-import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
-import { ListItem } from '../../components/ListItem';
-
-type Items = Array<{description: string, amount: number}>;
 
 export default function TabOneScreen() {
-  const [items, _] = useState<Items>([
-    {
-      description: "Batatinha no mercado",
-      amount: 200
-    },
-    {
-      description: "Melancia no mercado",
-      amount: 100
-    },
-  ]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>List of groups!</Text>
