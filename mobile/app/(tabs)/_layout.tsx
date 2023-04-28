@@ -25,7 +25,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
+          title: "Split Bill - Groups",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -55,8 +55,9 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Account"
         options={{
-          title: 'Account',
+          title: 'Split Bill - Account',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarLabel: "Account",
           headerRight: () => (
             <Link href="/AccountModal" asChild>
               <Pressable>
