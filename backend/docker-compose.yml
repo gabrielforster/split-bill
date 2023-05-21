@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  database:
+    container_name: postgres-split-bill
+    environment:
+      POSTGRES_PASSWORD: PASSWORD
+    hostname: postgres-split-bill
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/postgres-split-bill/data
+
+volumes:
+  pgdata:
+    driver: local
