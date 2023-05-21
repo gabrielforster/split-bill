@@ -4,7 +4,7 @@
   "description": "Split Bill repo",
   "scripts": {
     "install-mobile": "cd mobile && npm i && cd ..",
-    "install-server": "cd server && npm i && cd ..",
+    "install-backend": "cd backend && npm i && cd ..",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
