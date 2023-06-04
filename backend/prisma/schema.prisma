@@ -17,6 +17,8 @@ model User {
   groups   Group[]
   bills    Bill[]
   Session  Session[]
+
+  @@index([username])
 }
 
 model Group {
