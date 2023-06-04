@@ -5,6 +5,7 @@ import { CreateUserDto } from './dtos/create-user-dto';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { UserNoPass } from './types';
 import { UpdatePasswordDto } from './dtos/update-password';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -25,12 +26,33 @@ export class UserService {
     return user;
   }
 
-  async findOne(id: string): Promise<UserNoPass> {
+  async findMe(username: string): Promise<UserNoPass> {
+    const me = await this.findByUsername(username);
+
+    delete me.password;
+
+    return me;
+  }
+
+  async findByUsername(username: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
-      where: { id },
+      where: { username },
     });
 
-    delete user.password;
+    return user;
+  }
+
+  async findByUsernameAndPassword(
+    username: string,
+    password: string,
+  ): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { username },
+    });
+
+    const passwordMatch = await compare(password, user.password);
+
+    if (!passwordMatch) throw new Error('Invalid credentials');
 
     return user;
   }
