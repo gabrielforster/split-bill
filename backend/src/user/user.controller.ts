@@ -27,6 +27,7 @@ export class UserController {
   @Auth()
   @Get('me')
   async findMe(@Request() req: any) {
+    console.log(req.user);
     return this.userService.findMe(req.user.username);
   }
 
