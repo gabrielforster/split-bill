@@ -1,5 +1,5 @@
 export type RequestUser = {
-  id: number;
+  id: string;
   username: string;
   email: string;
   active: boolean;
