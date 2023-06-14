@@ -8,25 +8,34 @@ datasource db {
 }
 
 model User {
-  id       String    @id @unique @default(cuid())
-  email    String    @unique
-  password String
-  fullname String
-  username String    @unique
-  active   Boolean   @default(true)
-  groups   Group[]
-  bills    Bill[]
-  Session  Session[]
+  id        String      @id @unique @default(cuid())
+  email     String      @unique
+  password  String
+  fullname  String
+  username  String      @unique
+  active    Boolean     @default(true)
+  bills     Bill[]
+  GroupUser GroupUser[]
+  Invite    Invite[]
 
   @@index([username])
 }
 
+model GroupUser {
+  id      String @id @unique @default(cuid())
+  Group   Group  @relation(fields: [groupId], references: [id])
+  groupId String
+  User    User   @relation(fields: [userId], references: [id])
+  userId  String
+}
+
 model Group {
-  id          String  @id @unique @default(cuid())
+  id          String      @id @unique @default(cuid())
   name        String
   description String?
-  users       User[]
   bills       Bill[]
+  GroupUser   GroupUser[]
+  Invite      Invite[]
 }
 
 model Bill {
@@ -39,11 +48,12 @@ model Bill {
   groupId     String?
 }
 
-model Session {
-  id        String   @id @unique @default(cuid())
-  token     String   @unique
-  createdAt DateTime
-  expiresAt DateTime
-  User      User     @relation(fields: [userId], references: [id])
-  userId    String
+model Invite {
+  id      String  @id @unique @default(cuid())
+  User    User?   @relation(fields: [userId], references: [id])
+  userId  String?
+  Group   Group?  @relation(fields: [groupId], references: [id])
+  groupId String?
+
+  @@index([userId])
 }
