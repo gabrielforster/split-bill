@@ -17,6 +17,7 @@ model User {
   bills     Bill[]
   GroupUser GroupUser[]
   Invite    Invite[]
+  Group     Group[]
 
   @@index([username])
 }
@@ -33,19 +34,21 @@ model Group {
   id          String      @id @unique @default(cuid())
   name        String
   description String?
+  User        User        @relation(fields: [createdBy], references: [id])
+  createdBy   String
   bills       Bill[]
   GroupUser   GroupUser[]
   Invite      Invite[]
 }
 
 model Bill {
-  id          String  @id @unique @default(cuid())
+  id          String @id @unique @default(cuid())
   description String
   amount      Int
-  User        User?   @relation(fields: [userId], references: [id])
-  userId      String?
-  Group       Group?  @relation(fields: [groupId], references: [id])
-  groupId     String?
+  User        User   @relation(fields: [userId], references: [id])
+  userId      String
+  Group       Group  @relation(fields: [groupId], references: [id])
+  groupId     String
 }
 
 model Invite {
