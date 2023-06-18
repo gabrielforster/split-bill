@@ -43,8 +43,8 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Resumo dos grupos!' }} />
-          <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Detalhes da conta!' }} />
+          {/* <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Resumo geral dos grupos' }} />  */}
+          <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Editando Conta' }} />
         </Stack>
       </ThemeProvider>
     </>
