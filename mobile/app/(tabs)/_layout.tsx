@@ -25,7 +25,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Split Bill - Grupos",
+          title: "Grupos",
           tabBarLabel: "Grupos",
           tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
           headerRight: () => (
@@ -46,9 +46,9 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="summary"
+        name="Summary"
         options={{
-          title: "Split Bill - Resumo",
+          title: "Resumo",
           tabBarLabel: "Resumo",
           tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
         }}
@@ -57,7 +57,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Account"
         options={{
-          title: "Split Bill - Conta",
+          title: "Conta",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           tabBarLabel: "Conta",
           headerRight: () => (
@@ -65,8 +65,8 @@ export default function TabLayout() {
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
-                    name="eye"
-                    size={25}
+                    name="pencil"
+                    size={20}
                     color={Colors[colorScheme ?? 'light'].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
