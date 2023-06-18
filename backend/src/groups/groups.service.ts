@@ -1,4 +1,7 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { RequestUser } from '../decorators/types/request-user';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { CreateGroupDto } from './dtos/CreateGroup.dto';
@@ -81,6 +84,146 @@ export class GroupsService {
     return this.prisma.group.delete({
       where: {
         id: groupId,
+      },
+    });
+  }
+
+  async getUserInvites(user: RequestUser) {
+    console.log(user.id);
+    return this.prisma.invite.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        Group: {
+          select: {
+            name: true,
+            description: true,
+            createdBy: true,
+          },
+        },
+      },
+    });
+  }
+
+  async inviteUserToGroup(
+    groupId: string,
+    username: string,
+    user: RequestUser,
+  ) {
+    const userToInvite = await this.prisma.user.findFirst({
+      where: {
+        username,
+      },
+    });
+
+    const invite = await this.prisma.invite.findFirst({
+      where: {
+        groupId,
+        userId: userToInvite.id,
+      },
+    });
+
+    if (invite) {
+      throw new UnauthorizedException('You are already invited to this group');
+    }
+
+    const group = await this.prisma.group.findFirst({
+      where: {
+        id: groupId,
+        createdBy: user.id,
+      },
+    });
+
+    if (!group) {
+      throw new UnauthorizedException('You are not the owner of this group');
+    }
+
+    return this.prisma.invite.create({
+      data: {
+        groupId,
+        userId: userToInvite.id,
+      },
+    });
+  }
+
+  async acceptGroupInvite(inviteId: string, user: RequestUser) {
+    const invite = await this.prisma.invite.findFirst({
+      where: {
+        id: inviteId,
+        userId: user.id,
+      },
+    });
+
+    if (!invite) {
+      throw new UnauthorizedException('You are not invited to this group');
+    }
+
+    await this.prisma.invite.delete({
+      where: {
+        id: invite.id,
+      },
+    });
+
+    return this.prisma.groupUser.create({
+      data: {
+        groupId: invite.groupId,
+        userId: user.id,
+      },
+    });
+  }
+
+  async declineGroupInvite(inviteId: string, user: RequestUser) {
+    const invite = await this.prisma.invite.findFirst({
+      where: {
+        id: inviteId,
+        userId: user.id,
+      },
+    });
+
+    if (!invite) {
+      throw new UnauthorizedException('You are not invited to this group');
+    }
+
+    return this.prisma.invite.delete({
+      where: {
+        id: invite.id,
+      },
+    });
+  }
+
+  async removeUserFromGroup(
+    groupId: string,
+    userId: string,
+    user: RequestUser,
+  ) {
+    const group = await this.prisma.group.findFirst({
+      where: {
+        id: groupId,
+        createdBy: user.id,
+      },
+    });
+
+    if (!group) {
+      throw new UnauthorizedException('You are not the owner of this group');
+    }
+
+    if (group.createdBy === userId) {
+      throw new UnauthorizedException(
+        'You cannot remove the owner of the group',
+      );
+    }
+
+    const groupUser = await this.prisma.groupUser.findFirst({
+      where: {
+        groupId,
+        userId,
+      },
+    });
+
+    return this.prisma.groupUser.delete({
+      where: {
+        id: groupUser.id,
       },
     });
   }

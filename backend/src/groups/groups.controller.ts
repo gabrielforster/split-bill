@@ -21,8 +21,14 @@ export class GroupsController {
   @Auth()
   @Get()
   async getGroups(@User() user: RequestUser) {
-    console.log('HSHAHAHHA', user.id);
     return this.groupsService.getUserGroups(user);
+  }
+
+  @Auth()
+  @Get('invites')
+  async getInvites(@User() user: RequestUser) {
+    console.log('user', user);
+    return this.groupsService.getUserInvites(user);
   }
 
   @Auth()
@@ -56,23 +62,35 @@ export class GroupsController {
     return this.groupsService.deleteGroup(id, user);
   }
 
-  //  @Auth()
-  //  @Post(':id/users/:userId')
-  //  async inviteUserToGroup(
-  //    @Param('id') groupId: string,
-  //    @Param('userId') userId: string,
-  //    @User() user: RequestUser,
-  //  ) {
-  //    return this.groupsService.inviteUserToGroup(groupId, userId, user);
-  //  }
-  //
-  //  @Auth()
-  //  @Delete(':id/users/:userId')
-  //  async removeUserFromGroup(
-  //    @Param('id') id: string,
-  //    @Param('userId') userId: string,
-  //    @User() user: RequestUser,
-  //  ) {
-  //    return this.groupsService.removeUserFromGroup(id, userId, user);
-  //  }
+  @Auth()
+  @Post(':id/users/invite/:username')
+  async inviteUserToGroup(
+    @Param('id') groupId: string,
+    @Param('username') userId: string,
+    @User() user: RequestUser,
+  ) {
+    return this.groupsService.inviteUserToGroup(groupId, userId, user);
+  }
+
+  @Auth()
+  @Post('invites/:id/accept')
+  async acceptInvite(@Param('id') id: string, @User() user: RequestUser) {
+    return this.groupsService.acceptGroupInvite(id, user);
+  }
+
+  @Auth()
+  @Post('invites/:id/decline')
+  async declineInvite(@Param('id') id: string, @User() user: RequestUser) {
+    return this.groupsService.declineGroupInvite(id, user);
+  }
+
+  @Auth()
+  @Delete(':id/users/:userId')
+  async removeUserFromGroup(
+    @Param('id') groupId: string,
+    @Param('userId') userId: string,
+    @User() user: RequestUser,
+  ) {
+    return this.groupsService.removeUserFromGroup(groupId, userId, user);
+  }
 }
