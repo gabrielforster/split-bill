@@ -55,12 +55,13 @@ model Bill {
   userId      String
   Group       Group  @relation(fields: [groupId], references: [id])
   groupId     String
-  
+
   @@map("bills")
 }
 
 model Invite {
   id      String  @id @unique @default(cuid())
+  status  Boolean @default(false)
   User    User?   @relation(fields: [userId], references: [id])
   userId  String?
   Group   Group?  @relation(fields: [groupId], references: [id])
