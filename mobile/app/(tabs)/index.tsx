@@ -22,13 +22,11 @@ export default function TabOneScreen() {
       console.log('loadGroups')
       const response = await api.get('/groups', {
           headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdhYnJpZWxyb2NoYSIsImlhdCI6MTY4NzExNzMwMSwiZXhwIjoxNjg3MTI4MTAxfQ.hVsuog5w6z5idF5ugTQVIFZhlGlDXvu0n0zR0dauYB8'
           },
         });
       setGroups(response.data);
-      console.log(JSON.stringify(groups, null, 2));
     }
-    loadGroups();
+    // loadGroups();
   }, []);
 
   return (
@@ -37,7 +35,6 @@ export default function TabOneScreen() {
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {
         groups.map((group: any) => {
-            console.log('sdasdasdas', group);
             return <GroupsCard key={group.id} group={group} />
           }
         )
