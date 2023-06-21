@@ -27,6 +27,7 @@ export default function TabLayout() {
         options={{
           title: "Grupos",
           tabBarLabel: "Grupos",
+          tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
         }}
       />
 
