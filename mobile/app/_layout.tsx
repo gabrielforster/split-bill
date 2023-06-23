@@ -1,9 +1,13 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import React, { useState, useEffect, useContext } from 'react';
+import { Stack } from 'expo-router';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
-import { useEffect } from 'react';
+import { SplashScreen } from 'expo-router';
 import { useColorScheme } from 'react-native';
+import { AuthContext, AuthProvider } from '../contexts/AuthContext';
+import { AppTabs } from './App';
+import { Auth } from './Auth';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -35,18 +39,31 @@ export default function RootLayout() {
   );
 }
 
-function RootLayoutNav() {
+function App() {
   const colorScheme = useColorScheme();
+  const { userToken } = useContext(AuthContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!userToken);
+
+  useEffect(() => {
+    setIsAuthenticated(!!userToken);
+  }, [userToken]);
 
   return (
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack unmountInactiveRoutes>
+        <Stack.Screen name={ isAuthenticated ? "(tabs)" : "(auth-tabs)"} options={{ headerShown: false }} />
+        <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Editando Conta' }} />
+      </Stack>
+    </ThemeProvider>
+  )
+}
+
+function RootLayoutNav() {
+  return (
     <>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          {/* <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Resumo geral dos grupos' }} />  */}
-          <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Editando Conta' }} />
-        </Stack>
-      </ThemeProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </>
   );
 }

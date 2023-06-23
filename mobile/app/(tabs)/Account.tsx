@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Image, Pressable } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
+import { AuthContext } from '../../contexts/AuthContext';
 import { api } from '../../utils/api';
 
 type UserT = {
@@ -11,26 +12,22 @@ type UserT = {
 }
 
 export default function AccountScreen() {
-  const [user, setUser] = useState<UserT | null>(null);
-  
-  useEffect(() => {
-    async function loadUser() {
-      const response = await api.get('/user/me', {
-          headers: {
-          },
-        });
-      setUser(response.data);
-    }
-    // loadUser();
-  }, []);
+  const { logout, userToken } = useContext(AuthContext);
 
+  const user = {
+      username: "gabrielforster",
+      name: "Gabriel Rocha",
+      email: "rochafrgabriel@gmail.com",
+      profileImage: "https://github.com/gabrielforster.png"
+  }
+  
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <Image
           style={styles.profileImage}
           source={{
-            uri: 'https://github.com/gabrielforster.png',
+            uri: user.profileImage,
           }}
         />
       </View>
@@ -38,9 +35,18 @@ export default function AccountScreen() {
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.3)" />
 
       <View style={styles.accountContainer} >
-        <Text style={styles.username}>gabrielforster</Text>
-        <Text style={styles.fullname}>Gabriel Forster</Text>
+        <Text style={styles.username}>{user.username + '|' + userToken}</Text>
+        <Text style={styles.fullname}>{user.name}</Text>
       </View>
+
+      <Pressable
+        style={styles.logoutButton}
+        onPress={() => logout()}
+      >
+        <Text>
+          Sair
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -82,5 +88,14 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  logoutButton: {
+    width: '80%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#ff0000',
   },
 });
