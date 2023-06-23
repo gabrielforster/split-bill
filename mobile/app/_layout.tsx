@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
-import { useColorScheme } from 'react-native';
+import { Button, useColorScheme } from 'react-native';
 import { AuthContext, AuthProvider } from '../contexts/AuthContext';
 import { AppTabs } from './App';
 import { Auth } from './Auth';
@@ -16,7 +16,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: 'home',
 };
 
 export default function RootLayout() {
@@ -41,6 +41,7 @@ export default function RootLayout() {
 
 function App() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
   const { userToken } = useContext(AuthContext);
   const [isAuthenticated, setIsAuthenticated] = useState(!!userToken);
 
@@ -49,13 +50,40 @@ function App() {
   }, [userToken]);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack unmountInactiveRoutes>
-        <Stack.Screen name={ isAuthenticated ? "(tabs)" : "(auth-tabs)"} options={{ headerShown: false }} />
-        <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Editando Conta' }} />
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{ headerTitle: "Login", headerShown: false }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{
+            headerTitle: "Register",
+            headerRight: () => (
+              <Button title="Open" onPress={() => router.push("/modal")} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="modal"
+          options={{
+            presentation: "modal",
+            headerLeft: () => (
+              <Button title="Close" onPress={() => router.back()} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        {/* <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Editando Conta' }} /> */}
       </Stack>
     </ThemeProvider>
-  )
+  );
 }
 
 function RootLayoutNav() {

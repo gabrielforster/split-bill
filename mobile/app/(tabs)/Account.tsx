@@ -4,6 +4,7 @@ import { StyleSheet, Image, Pressable } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import { AuthContext } from '../../contexts/AuthContext';
 import { api } from '../../utils/api';
+import { useRouter } from 'expo-router';
 
 type UserT = {
   username: string;
@@ -12,7 +13,13 @@ type UserT = {
 }
 
 export default function AccountScreen() {
+  const router = useRouter()
   const { logout, userToken } = useContext(AuthContext);
+
+  function handleLogout() {
+    logout()
+    router.replace("/")
+  }
 
   const user = {
       username: "gabrielforster",
@@ -41,7 +48,7 @@ export default function AccountScreen() {
 
       <Pressable
         style={styles.logoutButton}
-        onPress={() => logout()}
+        onPress={() => handleLogout()}
       >
         <Text>
           Sair
