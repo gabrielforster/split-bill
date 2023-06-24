@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { createContext, FC, useState } from "react";
+import { createContext, FC, useState, useEffect } from "react";
 import {  Alert } from "react-native";
 import { setItemAsync, getItemAsync }  from "expo-secure-store"
 import { api } from "../utils/api";
@@ -30,10 +30,13 @@ export const AuthContext = createContext<{
 });
 
 export function AuthProvider({ children }: { children: JSX.Element }) {
+
   const router = useRouter();
   
   const [userToken, setUserToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
+
+  useEffect(() => { loadToken() }, [])
 
   async function loadToken () {
     const token = await getItemAsync('userToken');

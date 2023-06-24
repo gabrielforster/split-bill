@@ -1,6 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, useRouter } from 'expo-router';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { View, Pressable, Text, useColorScheme, StyleSheet, TextInput, Alert } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -9,8 +9,6 @@ export default function Login () {
 	const router = useRouter();
   const { userToken, login, loadToken } = useContext(AuthContext);
   const textColor = colorScheme === 'dark' ? 'white' : 'black';
-
-  loadToken();
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,10 +17,13 @@ export default function Login () {
     login(username, password)
 	};
 
-  if (userToken) {
-    router.replace('/Home');
-    return
-  }
+  useEffect(() => {
+      if (userToken) {
+        router.replace('/Home');
+        return
+      }
+  }, [userToken])
+
 
 	return (
     <View style={styles.container}>
@@ -70,7 +71,7 @@ export default function Login () {
 			</Link>
       <Pressable
         style={styles.button}
-        onPress={handleLogin}
+        onPress={() => handleLogin() }
       >
         <Text
           style={styles.buttonLabel}
