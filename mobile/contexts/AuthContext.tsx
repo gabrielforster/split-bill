@@ -1,49 +1,96 @@
+import { useRouter } from "expo-router";
 import { createContext, FC, useState } from "react";
+import {  Alert } from "react-native";
+import { setItemAsync, getItemAsync }  from "expo-secure-store"
+import { api } from "../utils/api";
 
 type User = {
   username: string
   name: string
   email: string
-  profileImage: string
+  id: string
 }
 
 export const AuthContext = createContext<{
-  login: () => void,
+  login: (username: string, password: string) => Promise<void>,
   logout: () => void,
-  isLoading: boolean,
+  getUserToken: () => Promise<string | null>,
+  fetchUserData: () => Promise<void>,
+  loadToken: () => Promise<void>,
   userToken: null | string,
+  userData: User | null 
 }>({
-    login: () => {},
+    login: (username, password) => new Promise(() => {}),
     logout: () => {},
-    isLoading: false,
+    getUserToken: async () => '',
+    fetchUserData: async () => {},
+    loadToken: async () => {},
     userToken: null,
+    userData: null,
 });
 
 export function AuthProvider({ children }: { children: JSX.Element }) {
-  const [user, setUser] = useState({
-      username: "gabrielforster",
-      name: "Gabriel Rocha",
-      email: "rochafrgabriel@gmail.com",
-      profileImage: "https://github.com/gabrielforster.png"
+  const router = useRouter();
+  
+  const [userToken, setUserToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
+
+  async function loadToken () {
+    const token = await getItemAsync('userToken');
+    api.defaults.headers.Authorization = 'Bearer ' + token;
+    setUserToken(token);
+  }
+
+
+  async function login (username: string, password: string): Promise<void> {
+    const res = await api.post('/auth/login', {
+      username,
+      password
     });
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState<string | null>(null);
+    if (res.status === 201) {
+      const { data: { data, Authorization} } = res;
+      api.defaults.headers.Authorization = 'Bearer ' + Authorization;
+      setUserData(data);
+      setUserToken(Authorization);
 
-  async function login () {
-    console.log("login");
-    setUserToken("token");
-    setIsLoading(false);
-    console.log(userToken)
+      await setItemAsync('userToken', Authorization);
+
+      return 
+    }
+
+    Alert.alert('Usuario ou senha incorreta');
   }
 
   async function logout () {
     setUserToken(null);
-    setIsLoading(false);
+    await setItemAsync('userToken', '');
   }
 
+  async function getUserToken () {
+    const token = await getItemAsync('userToken');
+    return token
+  }
+
+  async function fetchUserData () {
+    if (!userToken) 
+      router.replace('/');
+    const res = await api.get('/user/me');
+
+    if (res.status === 200) {
+      const { data } = res;
+      setUserData(data);
+    }
+
+    if (res.status === 401) {
+      Alert.alert('Sessão expirada!');
+      router.replace('/');
+    }
+  }
+
+
   return (
-    <AuthContext.Provider value={{ login, logout, isLoading, userToken }}>
+    <AuthContext.Provider value={{ login, logout, userToken, getUserToken, userData, fetchUserData, loadToken }}>
       { children }
     </AuthContext.Provider>
   )
