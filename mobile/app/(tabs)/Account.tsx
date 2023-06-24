@@ -7,15 +7,11 @@ import { useRouter } from 'expo-router';
 
 export default function AccountScreen() {
   const router = useRouter()
-  const { logout, userToken, userData: user, fetchUserData } = useContext(AuthContext);
+  const { logout, userToken, userData: user } = useContext(AuthContext);
 
   function handleLogout() {
     logout()
     router.replace("/")
-  }
-
-  if (user === null) {
-    fetchUserData()
   }
   
   return (
