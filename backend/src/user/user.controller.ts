@@ -24,6 +24,11 @@ export class UserController {
     return this.userService.create(userData);
   }
 
+  @Get('exists/:username')
+  async exists(@Param('username') username: string): Promise<boolean> {
+    return this.userService.exists(username);
+  }
+
   @Auth()
   @Get('me')
   async findMe(@Request() req: any) {
