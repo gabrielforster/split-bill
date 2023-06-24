@@ -3,47 +3,31 @@ import { StyleSheet, Image, Pressable } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
 import { AuthContext } from '../../contexts/AuthContext';
-import { api } from '../../utils/api';
 import { useRouter } from 'expo-router';
-
-type UserT = {
-  username: string;
-  email: string;
-  id: string;
-}
 
 export default function AccountScreen() {
   const router = useRouter()
-  const { logout, userToken } = useContext(AuthContext);
+  const { logout, userToken, userData: user, fetchUserData } = useContext(AuthContext);
 
   function handleLogout() {
     logout()
     router.replace("/")
   }
 
-  const user = {
-      username: "gabrielforster",
-      name: "Gabriel Rocha",
-      email: "rochafrgabriel@gmail.com",
-      profileImage: "https://github.com/gabrielforster.png"
+  if (user === null) {
+    fetchUserData()
   }
   
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
-        <Image
-          style={styles.profileImage}
-          source={{
-            uri: user.profileImage,
-          }}
-        />
       </View>
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.3)" />
 
       <View style={styles.accountContainer} >
-        <Text style={styles.username}>{user.username + '|' + userToken}</Text>
-        <Text style={styles.fullname}>{user.name}</Text>
+        <Text style={styles.username}>{user?.username}</Text>
+        <Text style={styles.fullname}>{user?.name}</Text>
       </View>
 
       <Pressable

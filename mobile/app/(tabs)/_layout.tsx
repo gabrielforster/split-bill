@@ -1,6 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+import { Link, Tabs, useRouter } from 'expo-router';
+import { Button, Pressable, useColorScheme } from 'react-native';
 
 import Colors from '../../constants/Colors';
 
@@ -16,6 +16,7 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -28,6 +29,20 @@ export default function TabLayout() {
           title: "Grupos",
           tabBarLabel: "Grupos",
           tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
+          headerRight: () => (
+            <Link href="/CreateGroup" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <FontAwesome
+                    name="plus"
+                    size={20}
+                    color={Colors[colorScheme ?? 'light'].text}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+          ),
         }}
       />
 
@@ -62,7 +77,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      
     </Tabs>
   );
 }

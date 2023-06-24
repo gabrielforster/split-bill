@@ -42,12 +42,6 @@ export default function RootLayout() {
 function App() {
   const colorScheme = useColorScheme();
   const router = useRouter();
-  const { userToken } = useContext(AuthContext);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!userToken);
-
-  useEffect(() => {
-    setIsAuthenticated(!!userToken);
-  }, [userToken]);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -59,9 +53,10 @@ function App() {
         <Stack.Screen
           name="register"
           options={{
-            headerTitle: "Register",
-            headerRight: () => (
-              <Button title="Open" onPress={() => router.push("/modal")} />
+            presentation: "modal",
+            headerTitle: "Cadastro",
+            headerLeft: () => (
+              <Button title="Voltar" onPress={() => router.back()} />
             ),
           }}
         />
@@ -69,8 +64,29 @@ function App() {
           name="modal"
           options={{
             presentation: "modal",
+            headerTitle: "Modal",
             headerLeft: () => (
-              <Button title="Close" onPress={() => router.back()} />
+              <Button title="Fechar" onPress={() => router.back()} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="CreateGroup"
+          options={{
+            presentation: "modal",
+            headerTitle: "Criar Grupo",
+            headerLeft: () => (
+              <Button title="Fechar" onPress={() => router.back()} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="AccountModal"
+          options={{
+            presentation: "modal",
+            headerTitle: "Editar Conta",
+            headerLeft: () => (
+              <Button title="Fechar" onPress={() => router.back()} />
             ),
           }}
         />
