@@ -3,7 +3,7 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, useColorScheme, View as DefaultView } from 'react-native';
+import { Text as DefaultText, useColorScheme, View as DefaultView, TextInput as DefaultTextInput } from 'react-native';
 
 import Colors from '../constants/Colors';
 
@@ -28,6 +28,7 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+export type TextInputProps = { warn?: boolean, warnMessage?: string } & ThemeProps & DefaultTextInput['props'];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -41,4 +42,31 @@ export function View(props: ViewProps) {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function TextInput(props: TextInputProps) {
+  const { style, lightColor, darkColor, warn, warnMessage, ...otherProps } = props;
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+
+  const styles ={
+    backgroundColor,
+    color,
+    height: 50,
+    padding: 10,
+    borderWidth: 2,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 5,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderColor: warn ? 'red' : '#0359af',
+  }
+
+  return warn ? (
+    <View>
+      <DefaultTextInput style={[styles, style]} {...otherProps} />
+      <Text style={{ color: 'red' }}>{warnMessage}</Text>
+    </View>
+  )
+  : (<DefaultTextInput style={[styles, style]} {...otherProps} />)
 }

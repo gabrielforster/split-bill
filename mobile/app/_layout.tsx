@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, Link } from 'expo-router';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
-import { Button, useColorScheme } from 'react-native';
+import { Button, Pressable, useColorScheme } from 'react-native';
 import { AuthContext, AuthProvider } from '../contexts/AuthContext';
 import { AppTabs } from './App';
 import { Auth } from './Auth';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Colors from '../constants/Colors';
+import { GroupsContext } from '../contexts/GroupsContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -80,6 +82,42 @@ function App() {
             ),
           }}
         />
+        <Stack.Screen
+          name="DetailGroup/[id]"
+          options={{
+            presentation: "card",
+            headerTitle: "Detalhes do Grupo",
+            headerLeft: () => (
+              <Button title="Voltar" onPress={() => router.back()} />
+            ),
+            headerRight: () => (
+              <Link href="/InviteUser" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name="user-plus"
+                      size={20}
+                      color={Colors[colorScheme ?? 'light'].text}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="InviteUser"
+          options={{
+            presentation: "modal",
+            headerTitle: "Convidar para o grupo",
+            headerLeft: () => (
+              <Button title="Fechar" onPress={() => router.back()} />
+            ),
+          }}
+        />
+          
         <Stack.Screen
           name="AccountModal"
           options={{
