@@ -1,9 +1,13 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import React, { useState, useEffect, useContext } from 'react';
+import { Stack, useRouter } from 'expo-router';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
-import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { SplashScreen } from 'expo-router';
+import { Button, useColorScheme } from 'react-native';
+import { AuthContext, AuthProvider } from '../contexts/AuthContext';
+import { AppTabs } from './App';
+import { Auth } from './Auth';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -12,7 +16,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: 'home',
 };
 
 export default function RootLayout() {
@@ -35,18 +39,75 @@ export default function RootLayout() {
   );
 }
 
-function RootLayoutNav() {
+function App() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{ headerTitle: "Login", headerShown: false }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{
+            presentation: "modal",
+            headerTitle: "Cadastro",
+            headerLeft: () => (
+              <Button title="Voltar" onPress={() => router.back()} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="modal"
+          options={{
+            presentation: "modal",
+            headerTitle: "Modal",
+            headerLeft: () => (
+              <Button title="Fechar" onPress={() => router.back()} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="CreateGroup"
+          options={{
+            presentation: "modal",
+            headerTitle: "Criar Grupo",
+            headerLeft: () => (
+              <Button title="Fechar" onPress={() => router.back()} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="AccountModal"
+          options={{
+            presentation: "modal",
+            headerTitle: "Editar Conta",
+            headerLeft: () => (
+              <Button title="Fechar" onPress={() => router.back()} />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        {/* <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Editando Conta' }} /> */}
+      </Stack>
+    </ThemeProvider>
+  );
+}
+
+function RootLayoutNav() {
+  return (
     <>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          {/* <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Resumo geral dos grupos' }} />  */}
-          <Stack.Screen name="AccountModal" options={{ presentation: 'modal', title: 'Editando Conta' }} />
-        </Stack>
-      </ThemeProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </>
   );
 }

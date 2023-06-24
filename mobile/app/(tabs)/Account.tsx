@@ -1,46 +1,39 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Image, Pressable } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
-import { api } from '../../utils/api';
-
-type UserT = {
-  username: string;
-  email: string;
-  id: string;
-}
+import { AuthContext } from '../../contexts/AuthContext';
+import { useRouter } from 'expo-router';
 
 export default function AccountScreen() {
-  const [user, setUser] = useState<UserT | null>(null);
-  
-  useEffect(() => {
-    async function loadUser() {
-      const response = await api.get('/user/me', {
-          headers: {
-          },
-        });
-      setUser(response.data);
-    }
-    // loadUser();
-  }, []);
+  const router = useRouter()
+  const { logout, userToken, userData: user } = useContext(AuthContext);
 
+  function handleLogout() {
+    logout()
+    router.replace("/")
+  }
+  
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
-        <Image
-          style={styles.profileImage}
-          source={{
-            uri: 'https://github.com/gabrielforster.png',
-          }}
-        />
       </View>
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.3)" />
 
       <View style={styles.accountContainer} >
-        <Text style={styles.username}>gabrielforster</Text>
-        <Text style={styles.fullname}>Gabriel Forster</Text>
+        <Text style={styles.username}>{user?.username}</Text>
+        <Text style={styles.fullname}>{user?.name}</Text>
       </View>
+
+      <Pressable
+        style={styles.logoutButton}
+        onPress={() => handleLogout()}
+      >
+        <Text>
+          Sair
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -82,5 +75,14 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  logoutButton: {
+    width: '80%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#ff0000',
   },
 });

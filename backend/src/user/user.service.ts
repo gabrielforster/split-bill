@@ -26,6 +26,13 @@ export class UserService {
     return user;
   }
 
+  async exists(username: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { username },
+    });
+    return !!user;
+  }
+
   async findMe(username: string): Promise<UserNoPass> {
     const me = await this.findByUsername(username);
 

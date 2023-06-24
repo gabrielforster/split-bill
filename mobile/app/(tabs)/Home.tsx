@@ -18,15 +18,6 @@ export default function TabOneScreen() {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    async function loadGroups() {
-      console.log('loadGroups')
-      const response = await api.get('/groups', {
-          headers: {
-          },
-        });
-      setGroups(response.data);
-    }
-    // loadGroups();
   }, []);
 
   return (
