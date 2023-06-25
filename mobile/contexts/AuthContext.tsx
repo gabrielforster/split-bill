@@ -1,8 +1,9 @@
 import { useRouter } from "expo-router";
-import { createContext, FC, useState, useEffect } from "react";
+import { createContext, FC, useState, useEffect, Dispatch } from "react";
 import {  Alert } from "react-native";
 import { setItemAsync, getItemAsync }  from "expo-secure-store"
 import { api } from "../utils/api";
+import { AxiosError } from "axios";
 
 type User = {
   username: string
@@ -17,6 +18,8 @@ export const AuthContext = createContext<{
   getUserToken: () => Promise<string | null>,
   fetchUserData: () => Promise<void>,
   loadToken: () => Promise<void>,
+  setSelectedGroup: Dispatch<any>;
+  selectedGroup: any;
   userToken: null | string,
   userData: User | null 
 }>({
@@ -25,6 +28,8 @@ export const AuthContext = createContext<{
     getUserToken: async () => '',
     fetchUserData: async () => {},
     loadToken: async () => {},
+    setSelectedGroup: () => {},
+    selectedGroup: null,
     userToken: null,
     userData: null,
 });
@@ -35,6 +40,7 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
   
   const [userToken, setUserToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<any>(null);
 
   useEffect(() => { loadToken() }, [])
 
@@ -44,6 +50,10 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
     setUserToken(token);
   }
 
+  async function resetToken () {
+    setUserToken(null);
+    await setItemAsync('userToken', '');
+  }
 
   async function login (username: string, password: string): Promise<void> {
     try {
@@ -81,22 +91,24 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
   async function fetchUserData () {
     if (!userToken) 
       router.replace('/');
-    const res = await api.get('/user/me');
-
-    if (res.status === 200) {
+    try {
+      const res = await api.get('/user/me');
       const { data } = res;
       setUserData(data);
-    }
 
-    if (res.status === 401) {
-      Alert.alert('Sessão expirada!');
-      router.replace('/');
+    } catch (err) {
+      const error = JSON.parse(JSON.stringify(err)) as AxiosError
+      if (error.status === 401) {
+        resetToken();
+        router.replace('/');
+        Alert.alert('Sessão expirada!');
+      }
     }
   }
 
 
   return (
-    <AuthContext.Provider value={{ login, logout, userToken, getUserToken, userData, fetchUserData, loadToken }}>
+    <AuthContext.Provider value={{ login, logout, userToken, getUserToken, userData, fetchUserData, loadToken, selectedGroup, setSelectedGroup}}>
       { children }
     </AuthContext.Provider>
   )

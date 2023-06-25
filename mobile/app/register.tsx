@@ -53,18 +53,22 @@ export default function RegisterPage () {
     if(res.status === 201) {
       Alert.alert(`Registrado com sucesso ${username}!`);
       router.replace('/');
+      return;
     }
   
     if(res.status === 409) {
       Alert.alert('Usuario ja existe!');
+      return;
     }
 
     if(res.status === 500) {
       Alert.alert('Erro interno do servidor!');
+      return;
     }
 
     if(res.status === 400) {
       Alert.alert('Erro ao registrar!');
+      return;
     }
   }
 
