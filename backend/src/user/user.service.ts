@@ -6,10 +6,14 @@ import { UpdateUserDto } from './dtos/update-user-dto';
 import { UserNoPass } from './types';
 import { UpdatePasswordDto } from './dtos/update-password';
 import { User } from '@prisma/client';
+import { BillsService } from '../bills/bills.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly billsService: BillsService,
+  ) {}
 
   async create(data: CreateUserDto): Promise<UserNoPass> {
     await this.checkExistsByEmailOrUsername({
@@ -33,10 +37,18 @@ export class UserService {
     return !!user;
   }
 
-  async findMe(username: string): Promise<UserNoPass> {
+  async findMe(
+    username: string,
+  ): Promise<UserNoPass & { summary: { outcome: number; income: number } }> {
     const me = await this.findByUsername(username);
+    delete me.password;
 
-    return me;
+    const meBills = await this.billsService.getUserBillsSummaryFromMonth(me.id);
+
+    return {
+      ...me,
+      summary: meBills,
+    };
   }
 
   async findByUsername(username: string): Promise<User> {

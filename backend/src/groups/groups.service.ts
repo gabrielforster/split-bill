@@ -5,13 +5,17 @@ import {
 import { RequestUser } from '../decorators/types/request-user';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { CreateGroupDto } from './dtos/CreateGroup.dto';
+import { BillsService } from '../bills/bills.service';
 
 @Injectable()
 export class GroupsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly billsService: BillsService,
+  ) {}
 
   async getUserGroups(user: RequestUser) {
-    return this.prisma.groupUser.findMany({
+    const groups = await this.prisma.groupUser.findMany({
       where: {
         userId: user.id,
       },
@@ -19,10 +23,24 @@ export class GroupsService {
         Group: true,
       },
     });
+
+    const result = groups.map(async (group) => {
+      const summary = await this.billsService.getBillsSummaryByGroupId(
+        group.Group.id,
+        user,
+      );
+
+      return {
+        ...group.Group,
+        summary,
+      };
+    });
+
+    return Promise.all(result);
   }
 
-  async findGroupById(groupId: string, user: RequestUser) {
-    const users = await this.prisma.groupUser.findMany({
+  async findGroupById(groupId: string, requestUser: RequestUser) {
+    const groupUsers = await this.prisma.groupUser.findMany({
       where: {
         groupId,
       },
@@ -44,10 +62,28 @@ export class GroupsService {
       },
     });
 
-    return {
-      group,
-      users: users.map((user) => user.User),
+    const users = await Promise.all(
+      groupUsers.map(async (user) => {
+        const summary =
+          await this.billsService.getBillsSummaryByUserIdInGroupId(
+            groupId,
+            user.User.id,
+            requestUser,
+          );
+
+        return {
+          ...user.User,
+          summary,
+        };
+      }),
+    );
+
+    const result = {
+      ...group,
+      users,
     };
+
+    return result;
   }
 
   async createGroup(group: CreateGroupDto, user: RequestUser) {

@@ -67,12 +67,10 @@ export class BillsService {
     const billsSummaryAndUserSummary = bills.reduce(
       (acc, bill) => {
         if (bill.userId === user.id) {
-          acc.user.outcome += bill.amount;
-          acc.user.income += bill.amount;
+          acc.user[bill.type] += bill.amount;
         }
 
-        acc.group.outcome += bill.amount;
-        acc.group.income += bill.amount;
+        acc.group[bill.type] += bill.amount;
 
         return acc;
       },
@@ -89,5 +87,70 @@ export class BillsService {
     );
 
     return billsSummaryAndUserSummary;
+  }
+
+  async getBillsSummaryByUserIdInGroupId(
+    groupId: string,
+    userId: string,
+    user: RequestUser,
+  ) {
+    const isUserAGroupMember = await this.prisma.groupUser.findFirst({
+      where: {
+        groupId,
+        userId: user.id,
+      },
+    });
+
+    if (!isUserAGroupMember) {
+      throw new UnauthorizedException('User is not a member of this group');
+    }
+
+    const bills = await this.prisma.bill.findMany({
+      where: {
+        groupId,
+      },
+    });
+
+    const billsSummaryAndUserSummary = bills.reduce(
+      (acc, bill) => {
+        if (bill.userId === userId) {
+          acc[bill.type] += bill.amount;
+        }
+        return acc;
+      },
+      {
+        outcome: 0,
+        income: 0,
+      },
+    );
+
+    return billsSummaryAndUserSummary;
+  }
+
+  async getUserBillsSummaryFromMonth(userId: string) {
+    const nowMonth = new Date().getMonth();
+
+    const bills = await this.prisma.bill.findMany({
+      where: {
+        userId,
+        createdAt: {
+          gte: new Date(new Date().getFullYear(), nowMonth, 1),
+          lt: new Date(new Date().getFullYear(), nowMonth + 1, 1),
+        },
+      },
+    });
+
+    const billsSummary = bills.reduce(
+      (acc, bill) => {
+        acc[bill.type] += bill.amount;
+        return acc;
+      },
+      {
+        outcome: 0,
+        income: 0,
+      },
+    );
+
+    return billsSummary;
   }
 }

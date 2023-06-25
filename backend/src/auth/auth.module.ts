@@ -7,11 +7,14 @@ import { JwtStrategy } from './jwt-strategy';
 import { AuthController } from './auth.controller';
 import { UserService } from '../user/user.service';
 import { DatabaseModule } from 'src/database/database.module';
+import { BillsModule } from '../bills/bills.module';
+import { BillsService } from '../bills/bills.service';
 
 @Module({
   imports: [
     DatabaseModule,
     UserModule,
+    BillsModule,
     PassportModule.register({
       defaultStrategy: 'jwt',
       property: 'user',
@@ -25,7 +28,7 @@ import { DatabaseModule } from 'src/database/database.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, JwtStrategy],
+  providers: [AuthService, UserService, BillsService, JwtStrategy],
   exports: [PassportModule, JwtModule],
 })
 export class AuthModule {}
