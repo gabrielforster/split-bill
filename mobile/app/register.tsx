@@ -1,8 +1,8 @@
-import { View, Text, useColorScheme, StyleSheet, Alert, TextInput, Pressable } from 'react-native';
+import { View, Text, useColorScheme, StyleSheet, Alert, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import React, { useState } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { api } from '../utils/api';
-import { debounce, useDebounce } from '../utils/debounce';
+import { useDebounce } from '../utils/debounce';
 import { useRouter } from 'expo-router';
 
 export default function RegisterPage () {
@@ -27,8 +27,6 @@ export default function RegisterPage () {
 
   async function fetchUsernameExists() {
     const res = await api.get(`/user/exists/${username}`);
-
-    console.log(res.data)
 
     if (res.data)
       setUsernameExists(true);
@@ -71,60 +69,65 @@ export default function RegisterPage () {
   }
 
 	return (
-		<View style={styles.container}>
-      <View style={styles.formContainer}>
-        <FontAwesome style={styles.icon} name="user" size={80} color={textColor} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+        <View style={styles.formContainer}>
+          <FontAwesome style={styles.icon} name="user" size={80} color={textColor} />
 
-        <View style={styles.inputContainer}>
-          <Text style={{ ...styles.inputLabel, color: textColor }}>Digite seu nome de usuario</Text>
-          <TextInput
-            style={{ ...styles.input, color: textColor, ...(usernameExists ? { borderColor: 'red' } : null) }}
-            value={username}
-            onChangeText={handleChangeUsername}
-            placeholder="Nome de usuario"
-          />
-          { usernameExists ? <Text style={{ color: 'red' }}>Nome de usuario em uso!</Text> : null }
+          <View style={styles.inputContainer}>
+            <Text style={{ ...styles.inputLabel, color: textColor }}>Digite seu nome de usuario</Text>
+            <TextInput
+              style={{ ...styles.input, color: textColor, ...(usernameExists ? { borderColor: 'red' } : null) }}
+              value={username}
+              onChangeText={handleChangeUsername}
+              placeholder="Nome de usuario"
+            />
+            { usernameExists ? <Text style={{ color: 'red' }}>Nome de usuario em uso!</Text> : null }
 
-          <Text style={{ ...styles.inputLabel, color: textColor }}>Digite seu nome completo</Text>
-          <TextInput
-            style={{ ...styles.input, color: textColor }}
-            value={fullname}
-            onChangeText={setFullname}
-            placeholder="Nome completo"
-          />
+            <Text style={{ ...styles.inputLabel, color: textColor }}>Digite seu nome completo</Text>
+            <TextInput
+              style={{ ...styles.input, color: textColor }}
+              value={fullname}
+              onChangeText={setFullname}
+              placeholder="Nome completo"
+            />
 
-          <Text style={{ ...styles.inputLabel, color: textColor }}>Digite sua email</Text>
-          <TextInput
-            style={{ ...styles.input, color: textColor }}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Email"
-          />
+            <Text style={{ ...styles.inputLabel, color: textColor }}>Digite sua email</Text>
+            <TextInput
+              style={{ ...styles.input, color: textColor }}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Email"
+            />
 
-          <Text style={{ ...styles.inputLabel, color: textColor }}>Digite sua senha</Text>
-          <TextInput
-            style={{ ...styles.input, color: textColor }}
-            value={password}
-            onChangeText={setPassword}
-            placeholder="Senha"
-            secureTextEntry={true}
-          />
+            <Text style={{ ...styles.inputLabel, color: textColor }}>Digite sua senha</Text>
+            <TextInput
+              style={{ ...styles.input, color: textColor }}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Senha"
+              secureTextEntry={true}
+            />
 
-          <Text style={{ ...styles.inputLabel, color: textColor }}>Confirme sua senha</Text>
-          <TextInput
-            style={{ ...styles.input, color: textColor }}
-            value={passwordConfirmation}
-            onChangeText={setPasswordConfirmation}
-            placeholder="Senha"
-            secureTextEntry={true}
-          />
+            <Text style={{ ...styles.inputLabel, color: textColor }}>Confirme sua senha</Text>
+            <TextInput
+              style={{ ...styles.input, color: textColor }}
+              value={passwordConfirmation}
+              onChangeText={setPasswordConfirmation}
+              placeholder="Senha"
+              secureTextEntry={true}
+            />
 
-          <Pressable style={styles.button} onPress={handleRegister}>
-            <Text style={{ color: textColor }}>Registrar</Text>
-          </Pressable>
+            <Pressable style={styles.button} onPress={handleRegister}>
+              <Text style={{ color: textColor }}>Registrar</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
-		</View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
 	);
 };
 
@@ -141,8 +144,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   icon: {
-    marginTop: -100,
-    marginBottom: 40,
+    marginTop: -140,
+    marginBottom: 10,
   },
   inputContainer: {
     width: '100%',
