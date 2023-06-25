@@ -22,15 +22,32 @@ export class GroupsService {
   }
 
   async findGroupById(groupId: string, user: RequestUser) {
-    return this.prisma.groupUser.findFirst({
+    const users = await this.prisma.groupUser.findMany({
       where: {
         groupId,
-        userId: user.id,
       },
-      include: {
-        Group: true,
+      select: {
+        User: {
+          select: {
+            id: true,
+            username: true,
+            fullname: true,
+            active: true,
+          },
+        },
       },
     });
+
+    const group = await this.prisma.group.findFirst({
+      where: {
+        id: groupId,
+      },
+    });
+
+    return {
+      group,
+      users: users.map((user) => user.User),
+    };
   }
 
   async createGroup(group: CreateGroupDto, user: RequestUser) {
@@ -125,7 +142,7 @@ export class GroupsService {
     });
 
     if (invite) {
-      throw new UnauthorizedException('You are already invited to this group');
+      throw new UnauthorizedException('User already invited to this group');
     }
 
     const group = await this.prisma.group.findFirst({
