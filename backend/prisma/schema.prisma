@@ -52,6 +52,7 @@ model Bill {
   description String
   amount      Int
   type        String
+  createdAt   DateTime @default(now())
   User        User   @relation(fields: [userId], references: [id])
   userId      String
   Group       Group  @relation(fields: [groupId], references: [id])
