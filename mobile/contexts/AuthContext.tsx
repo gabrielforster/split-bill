@@ -56,23 +56,26 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
   }
 
   async function login (username: string, password: string): Promise<void> {
-    const res = await api.post('/auth/login', {
-      username,
-      password
-    });
+    try {
+      const res = await api.post('/auth/login', {
+        username,
+        password
+      });
 
-    if (res.status === 201) {
-      const { data: { data, Authorization} } = res;
-      api.defaults.headers.Authorization = 'Bearer ' + Authorization;
-      setUserData(data);
-      setUserToken(Authorization);
+      if (res.status === 201) {
+        const { data: { data, Authorization} } = res;
+        api.defaults.headers.Authorization = 'Bearer ' + Authorization;
+        setUserData(data);
+        setUserToken(Authorization);
 
-      await setItemAsync('userToken', Authorization);
+        await setItemAsync('userToken', Authorization);
 
-      return 
+        return 
+      }
+
+    } catch (error) {
+      Alert.alert('Usuario ou senha incorreta');
     }
-
-    Alert.alert('Usuario ou senha incorreta');
   }
 
   async function logout () {

@@ -25,6 +25,8 @@ export class AuthService {
 
     const token = this._createToken(user);
 
+    delete user.password;
+
     return { ...token, data: user };
   }
 

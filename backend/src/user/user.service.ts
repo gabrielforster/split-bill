@@ -36,8 +36,6 @@ export class UserService {
   async findMe(username: string): Promise<UserNoPass> {
     const me = await this.findByUsername(username);
 
-    delete me.password;
-
     return me;
   }
 

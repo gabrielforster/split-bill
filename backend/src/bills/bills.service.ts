@@ -64,19 +64,30 @@ export class BillsService {
       },
     });
 
-    const billsSummary = bills.reduce(
+    const billsSummaryAndUserSummary = bills.reduce(
       (acc, bill) => {
-        if (bill.type === 'income') {
-          acc.income += bill.amount;
-        } else {
-          acc.outcome += bill.amount;
+        if (bill.userId === user.id) {
+          acc.user.outcome += bill.amount;
+          acc.user.income += bill.amount;
         }
+
+        acc.group.outcome += bill.amount;
+        acc.group.income += bill.amount;
 
         return acc;
       },
-      { income: 0, outcome: 0 },
+      {
+        user: {
+          outcome: 0,
+          income: 0,
+        },
+        group: {
+          outcome: 0,
+          income: 0,
+        },
+      },
     );
 
-    return billsSummary;
+    return billsSummaryAndUserSummary;
   }
 }
