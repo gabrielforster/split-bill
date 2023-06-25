@@ -15,6 +15,9 @@ export class AuthService {
   async login({ username, password }: LoginDto): Promise<any> {
     const user = await this.userService.findByUsername(username);
 
+    if (!user)
+      throw new HttpException('INVALID_CREDENTIALS', HttpStatus.UNAUTHORIZED);
+
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch)
