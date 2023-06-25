@@ -3,8 +3,9 @@ import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { GroupsModule } from './groups/groups.module';
+import { BillsModule } from './bills/bills.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, GroupsModule, AuthModule],
+  imports: [DatabaseModule, UserModule, GroupsModule, BillsModule, AuthModule],
 })
 export class AppModule {}
