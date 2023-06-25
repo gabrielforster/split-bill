@@ -1,10 +1,12 @@
 
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useURL } from 'expo-linking';
+import { usePathname, useRouter } from 'expo-router';
+import { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { GroupCard } from '../../components/GroupCard';
 
 import { Text, View } from '../../components/Themed';
+import { AuthContext } from '../../contexts/AuthContext';
 import { api } from '../../utils/api';
 
 function GroupsWrapper(groups: any) {
@@ -18,19 +20,26 @@ function GroupsWrapper(groups: any) {
 }
 
 export default function TabOneScreen() {
+  const url = useURL();
+  const pathname = usePathname();
 
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const { setGroups: setStoreGroups } = useContext(AuthContext);
+
   useEffect(() => {
-    setIsLoading(true)
-    fetchGroups()
-  }, []);
+    if (pathname === '/Home') {
+      fetchGroups()
+    }
+  }, [pathname]);
 
   async function fetchGroups() {
     try {
+      setIsLoading(true);
       const res = await api.get('/groups');
       setGroups(res.data);
+      setStoreGroups(res.data);
     } catch (err) {
       console.error(err);
     } finally {

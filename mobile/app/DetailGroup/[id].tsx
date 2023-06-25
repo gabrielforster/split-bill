@@ -19,10 +19,12 @@ export default function DetailGroup (){
   async function fetchGroup() {
     try {
       setIsLoading(true)
-        const res = await api.get(`/groups/${id}`)
-        setGroup(res.data.group)
-        setUsers(res.data.users)
-        setOwner(res.data.users.find((user: any) => user.id === res.data.group.createdBy))
+      const res = await api.get(`/groups/${id}`)
+      setGroup(res.data)
+      setUsers(res.data.users)
+      setOwner(res.data.users.find((user: any) => user.id === res.data.createdBy))
+
+      console.log(res.data)
     } catch (err) {
       Alert.alert('Erro ao carregar dados do grupo', 'Tente novamente mais tarde! Iremos te redirecionar para a lista de grupos')
         console.error(err)
@@ -55,16 +57,23 @@ export default function DetailGroup (){
         <Text>
           Criado por: { owner?.fullname }
         </Text>
-        
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: '700',
-            marginTop: 10,
-          }}
-        >
-          { group.description }
+
+        <Text style={styles.groupName}>
+          { group.name }
         </Text>
+        
+         { group.description &&
+           <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '700',
+              marginTop: 10,
+              marginBottom: -20,
+            }}
+            >
+              { group.description }
+            </Text> 
+        }
       </View>
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.3)" />
@@ -98,6 +107,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  groupName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 30,
   },
   separator: {
     marginVertical: 30,

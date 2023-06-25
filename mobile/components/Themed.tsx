@@ -55,10 +55,7 @@ export function TextInput(props: TextInputProps) {
     height: 50,
     padding: 10,
     borderWidth: 2,
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 5,
-    borderBottomRightRadius: 15,
-    borderBottomLeftRadius: 15,
+    borderRadius: 5,
     borderColor: warn ? 'red' : '#0359af',
   }
 

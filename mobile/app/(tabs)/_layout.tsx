@@ -47,11 +47,17 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="Summary"
+        name="NewBill"
         options={{
-          title: "Resumo",
-          tabBarLabel: "Resumo",
-          tabBarIcon: ({ color }) => <TabBarIcon name="money" color={color} />,
+          title: "Nova transação",
+          tabBarLabel: "Nova transação",
+          tabBarIcon: ({ color }) => <TabBarIcon name="plus-circle" color={color} />,
+          headerLeft: (props) => (
+            <Button
+              title="Cancelar"
+              onPress={() => router.push('/')}
+            />
+          ),
         }}
       />
 

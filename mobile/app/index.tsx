@@ -3,20 +3,22 @@ import { Link, useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
 import { Pressable, useColorScheme, StyleSheet, TextInput, Alert } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { View, Pressable, Text, useColorScheme, StyleSheet, TextInput, Alert } from 'react-native';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Login () {
   const colorScheme = useColorScheme()
 	const router = useRouter();
   const { userToken, login, loadToken, fetchUserData } = useContext(AuthContext);
-  const { userToken, login, loadToken } = useContext(AuthContext);
   const textColor = colorScheme === 'dark' ? 'white' : 'black';
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-	const handleLogin = () => {
-    login(username, password)
+	const handleLogin = async () => {
+    setIsLoading(true);
+    await login(username, password)
+    setIsLoading(false);
 	};
 
   useEffect(() => {
@@ -76,11 +78,16 @@ export default function Login () {
         style={styles.button}
         onPress={() => handleLogin() }
       >
-        <Text
-          style={styles.buttonLabel}
-        >
-          Entrar
-        </Text>
+       { isLoading 
+         ? <FontAwesome name="spinner" size={20} color="#fff" /> 
+         : (
+             <Text
+               style={styles.buttonLabel}
+             >
+               Entrar
+             </Text>
+         )
+       }
       </Pressable>
 
     </View>

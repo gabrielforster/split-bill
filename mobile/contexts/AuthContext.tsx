@@ -7,9 +7,13 @@ import { AxiosError } from "axios";
 
 type User = {
   username: string
-  name: string
+  fullname: string
   email: string
   id: string
+  summary: {
+    income: number
+    outcome: number
+  }
 }
 
 export const AuthContext = createContext<{
@@ -19,7 +23,9 @@ export const AuthContext = createContext<{
   fetchUserData: () => Promise<void>,
   loadToken: () => Promise<void>,
   setSelectedGroup: Dispatch<any>;
+  setGroups: Dispatch<any>;
   selectedGroup: any;
+  groups: any;
   userToken: null | string,
   userData: User | null 
 }>({
@@ -29,7 +35,9 @@ export const AuthContext = createContext<{
     fetchUserData: async () => {},
     loadToken: async () => {},
     setSelectedGroup: () => {},
+    setGroups: () => {},
     selectedGroup: null,
+    groups: null,
     userToken: null,
     userData: null,
 });
@@ -41,6 +49,7 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
   const [userToken, setUserToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<any>(null);
+  const [groups, setGroups] = useState<any[]>([]);
 
   useEffect(() => { loadToken() }, [])
 
@@ -108,7 +117,7 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
 
 
   return (
-    <AuthContext.Provider value={{ login, logout, userToken, getUserToken, userData, fetchUserData, loadToken, selectedGroup, setSelectedGroup}}>
+    <AuthContext.Provider value={{ login, logout, userToken, getUserToken, userData, fetchUserData, loadToken, selectedGroup, setSelectedGroup, groups, setGroups}}>
       { children }
     </AuthContext.Provider>
   )

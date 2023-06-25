@@ -1,14 +1,17 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, Pressable, StyleSheet, useColorScheme } from "react-native";
 import { View, Text } from "../../../components/Themed";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { formatCurrency } from "../../../utils";
 import { api } from "../../../utils/api";
 
 export function UserCard({ user, isOwner, onDeleteUser }: any) {
   const router = useRouter();
   const { selectedGroup } = useContext(AuthContext)
+
+  const [summary, setSummary] = useState(0);
   
   async function removeUser() {
     try {
@@ -34,6 +37,10 @@ export function UserCard({ user, isOwner, onDeleteUser }: any) {
     ])
   }
 
+  useEffect(() => {
+    setSummary((user.summary.income - user.summary.outcome) / 100)
+  }, [])
+
   return (
     <View style={styles.container}>
        <View style={styles.userInfo}>
@@ -47,20 +54,20 @@ export function UserCard({ user, isOwner, onDeleteUser }: any) {
        </View> 
 
        <View style={styles.userSummay}>
-        <FontAwesome name={ 1200 > 0 ? 'arrow-up' : 'arrow-down'} size={20} color={1200 > 0 ? 'green' : 'red'} />
+        <FontAwesome name={ summary > 0 ? 'arrow-up' : 'arrow-down'} size={20} color={summary > 0 ? 'green' : 'red'} />
         <Text
           style={{ 
-            color: 1200 > 0 ? 'green' : 'red',
+            color: summary > 0 ? 'green' : 'red',
           }}
           
         >
-          { new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(1200) }
+          { formatCurrency(Math.abs(summary)) }
         </Text>
        </View>
 
        <View style={styles.actions}>
           <Pressable onPress={() => handleRemoveUser()}>
-            <FontAwesome name="trash" size={20} color="red" />
+            <FontAwesome name="user-times" size={20} color="red" />
           </Pressable>
        </View>
     </View>
