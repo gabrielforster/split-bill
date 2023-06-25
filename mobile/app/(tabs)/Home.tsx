@@ -1,3 +1,4 @@
+
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
@@ -36,7 +37,6 @@ export default function TabOneScreen() {
       setIsLoading(false)
     }
   }
-
 
   return (
     <View style={styles.container}>

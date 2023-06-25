@@ -3,12 +3,13 @@ import { Link, useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
 import { Pressable, useColorScheme, StyleSheet, TextInput, Alert } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { AuthContext } from '../contexts/AuthContext';
+import { View, Pressable, Text, useColorScheme, StyleSheet, TextInput, Alert } from 'react-native';
 
 export default function Login () {
   const colorScheme = useColorScheme()
 	const router = useRouter();
   const { userToken, login, loadToken, fetchUserData } = useContext(AuthContext);
+  const { userToken, login, loadToken } = useContext(AuthContext);
   const textColor = colorScheme === 'dark' ? 'white' : 'black';
   
   const [username, setUsername] = useState('');
