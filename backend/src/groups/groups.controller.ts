@@ -85,6 +85,12 @@ export class GroupsController {
   }
 
   @Auth()
+  @Get('/invites/:groupId')
+  async getGroupInvites(@Param('groupId') groupId: string) {
+    return this.groupsService.getGroupInvites(groupId);
+  }
+
+  @Auth()
   @Delete(':id/users/:userId')
   async removeUserFromGroup(
     @Param('id') groupId: string,

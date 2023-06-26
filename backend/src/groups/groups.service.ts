@@ -251,6 +251,24 @@ export class GroupsService {
     });
   }
 
+  async getGroupInvites(groupId: string) {
+    return this.prisma.invite.findMany({
+      where: {
+        groupId,
+      },
+      include: {
+        User: {
+          select: {
+            id: true,
+            username: true,
+            fullname: true,
+            active: true,
+          },
+        },
+      },
+    });
+  }
+
   async removeUserFromGroup(
     groupId: string,
     userId: string,
