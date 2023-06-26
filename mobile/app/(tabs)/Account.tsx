@@ -3,7 +3,7 @@ import { StyleSheet, Image, Pressable, useColorScheme, ActivityIndicator } from 
 
 import { Text, View } from '../../components/Themed';
 import { AuthContext } from '../../contexts/AuthContext';
-import { usePathname, useRouter } from 'expo-router';
+import { Link, usePathname, useRouter } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import { formatCurrency } from '../../utils';
 
@@ -33,7 +33,6 @@ export default function AccountScreen() {
 
   useEffect(() => {
     if (pathname === '/Account') {
-      console.log('fetching user data')
       fetchUser()
     }
   }, [pathname]);
@@ -66,8 +65,15 @@ export default function AccountScreen() {
       </View>
 
       <View style={styles.total}>
-        <FontAwesome name={summary >= 0 ? "arrow-up" : "arrow-down"} size={20} color={textColor} />
-        <Text style={styles.totalText}>{formatCurrency(summary)}</Text>
+        <FontAwesome name={summary >= 0 ? "arrow-up" : "arrow-down"} size={20} color={summary >= 0 ? 'green' : 'red'} />
+        <Text
+          style={{
+            ...styles.totalText,
+            color:summary >= 0 ? 'green' : 'red'
+          }}
+        >
+          {formatCurrency(summary)}
+        </Text>
       </View>
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.3)" />
@@ -84,10 +90,19 @@ export default function AccountScreen() {
       </View>
 
       <Pressable
+        style={styles.invites}
+        onPress={() => router.push('/Invites')}
+      >
+        <Text style={{ color: 'white'}}>
+          Meus Convites
+        </Text>
+      </Pressable>
+
+      <Pressable
         style={styles.logoutButton}
         onPress={() => handleLogout()}
       >
-        <Text>
+        <Text style={{ color: 'white'}}>
           Sair
         </Text>
       </Pressable>
@@ -170,6 +185,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'red',
+  },
+  invites: {
+    width: '80%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 10,
+    backgroundColor: '#0359af',
   },
   logoutButton: {
     width: '80%',

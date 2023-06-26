@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { useRouter, useSearchParams } from "expo-router";
 import { useContext, useState } from "react";
 import { Alert, Pressable, StyleSheet } from "react-native";
@@ -13,18 +12,31 @@ export default function InviteUser() {
 
   const [username, setUsername] = useState('')
 
+  async function fetchUsernameExists() {
+    const res = await api.get(`/user/exists/${username}`);
+
+    return res.data;
+  }
+
   async function handleInvite () {
     if (!username) {
-      Alert.alert('Digite um nome de usuario');
+      Alert.alert('Digite um nome de usuario valido!');
       return;
     }
-    try {
-      const res = await api.post(`/groups/${selectedGroup.id}/users/invite/${username}`)
-    } catch (err) {
-      console.log(JSON.stringify(err, null, 2))
+
+    const usernameExists = await fetchUsernameExists();
+    if (!usernameExists) {
+      Alert.alert('Usuario nao existe!');
+      return;
     }
 
-    Alert.alert('Usuario convidado com sucesso!', '', [{ text: 'OK', onPress: () => router.back() }]);
+    try {
+      const res = await api.post(`/groups/${selectedGroup.id}/users/invite/${username}`)
+      Alert.alert('Usuario convidado com sucesso!', '', [{ text: 'OK', onPress: () => router.back() }]);
+    } catch (err) {
+      Alert.alert('Ocorreu um erro ao convidar o usuario, tente novamente mais tarde.', 'Verifique se o usuario ja nao esta no grupo.')
+    }
+
   }
 
   return (

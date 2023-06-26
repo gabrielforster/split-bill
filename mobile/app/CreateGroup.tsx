@@ -69,7 +69,7 @@ export default function CreateGroup () {
       </View>
       
       <Pressable style={styles.submit} onPress={handleCreate}>
-        <Text style={{ color: textColor }}>Criar</Text>
+        <Text style={{ color: 'white' }}>Criar</Text>
       </Pressable>
     </View>
 	);

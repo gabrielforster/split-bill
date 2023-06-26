@@ -22,6 +22,7 @@ export const AuthContext = createContext<{
   getUserToken: () => Promise<string | null>,
   fetchUserData: () => Promise<void>,
   loadToken: () => Promise<void>,
+  fetchGroup: () => Promise<any>,
   setSelectedGroup: Dispatch<any>;
   setGroups: Dispatch<any>;
   selectedGroup: any;
@@ -36,6 +37,7 @@ export const AuthContext = createContext<{
     loadToken: async () => {},
     setSelectedGroup: () => {},
     setGroups: () => {},
+    fetchGroup: async () => {},
     selectedGroup: null,
     groups: null,
     userToken: null,
@@ -115,9 +117,23 @@ export function AuthProvider({ children }: { children: JSX.Element }) {
     }
   }
 
+  async function fetchGroup () {
+    if(!selectedGroup.id) return;
+
+    try {
+      const res = await api.get(`/groups/${selectedGroup.id}`);
+      const { data } = res;
+      setSelectedGroup(data);
+    }
+    catch (err) {
+      console.log(err);
+    }
+
+    return selectedGroup;
+  }
 
   return (
-    <AuthContext.Provider value={{ login, logout, userToken, getUserToken, userData, fetchUserData, loadToken, selectedGroup, setSelectedGroup, groups, setGroups}}>
+    <AuthContext.Provider value={{ login, logout, userToken, getUserToken, userData, fetchUserData, loadToken, selectedGroup, setSelectedGroup, groups, setGroups, fetchGroup }}>
       { children }
     </AuthContext.Provider>
   )

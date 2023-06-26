@@ -54,10 +54,10 @@ export function UserCard({ user, isOwner, onDeleteUser }: any) {
        </View> 
 
        <View style={styles.userSummay}>
-        <FontAwesome name={ summary > 0 ? 'arrow-up' : 'arrow-down'} size={20} color={summary > 0 ? 'green' : 'red'} />
+        <FontAwesome name={ summary >= 0 ? 'arrow-up' : 'arrow-down'} size={20} color={summary >= 0 ? 'green' : 'red'} />
         <Text
           style={{ 
-            color: summary > 0 ? 'green' : 'red',
+            color: summary >= 0 ? 'green' : 'red',
           }}
           
         >

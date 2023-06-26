@@ -136,10 +136,46 @@ function App() {
         />
 
         <Stack.Screen
+          name="ListGroupUsers"
+          options={{
+            presentation: "modal",
+            headerTitle: "Membros do Grupo",
+            headerLeft: () => (
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
+            ),
+          }}
+        />
+
+        <Stack.Screen
           name="InviteUser"
           options={{
             presentation: "modal",
             headerTitle: "Convidar para o grupo",
+            headerLeft: () => (
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="Invites"
+          options={{
+            presentation: "modal",
+            headerTitle: "Seus convites",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
                 <FontAwesome

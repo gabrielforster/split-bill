@@ -8,6 +8,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { api } from '../../utils/api';
 import { usePathname, useRouter } from 'expo-router';
+import Colors from '../../constants/Colors';
 
 export default function NewBill() {
   const { groups, fetchGroups } = useContext(AuthContext);
@@ -115,7 +116,7 @@ export default function NewBill() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
+        style={{ ...styles.container, backgroundColor: Colors[colorScheme ?? 'light'].background }}
       >
       <View
         style={styles.inputContainer}

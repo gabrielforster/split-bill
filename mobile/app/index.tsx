@@ -64,11 +64,13 @@ export default function Login () {
             ...styles.button,
             backgroundColor: 'transparent',
             borderColor: '#0359af',
-            borderWidth: 2
+            borderWidth: 2,
           }}
         >
 					<Text
-            style={styles.buttonLabel}
+            style={{
+              color: textColor
+            }}
           >
             Criar conta
           </Text>
@@ -82,7 +84,7 @@ export default function Login () {
          ? <FontAwesome name="spinner" size={20} color="#fff" /> 
          : (
              <Text
-               style={styles.buttonLabel}
+              style={{ color: '#fff' }}
              >
                Entrar
              </Text>
@@ -121,9 +123,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     borderWidth: 2,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderRadius: 5,
     borderColor: '#0359af',
     color: '#fff',
   },
@@ -137,10 +137,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: '80%',
     margin: 12,
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: '#0359af',
-  },
-  buttonLabel: {
-    color: '#fff',
   },
 });

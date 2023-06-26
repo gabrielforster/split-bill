@@ -126,7 +126,7 @@ export default function RegisterPage () {
             />
 
             <Pressable style={styles.button} onPress={handleRegister}>
-              <Text style={{ color: textColor }}>Registrar</Text>
+              <Text style={{ color: '#fff' }}>Registrar</Text>
             </Pressable>
           </View>
         </View>

@@ -20,16 +20,16 @@ function GroupsWrapper(groups: any) {
 }
 
 export default function TabOneScreen() {
-  const url = useURL();
   const pathname = usePathname();
 
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { setGroups: setStoreGroups } = useContext(AuthContext);
+  const { setGroups: setStoreGroups, setSelectedGroup } = useContext(AuthContext);
 
   useEffect(() => {
     if (pathname === '/Home') {
+      setSelectedGroup(null);
       fetchGroups()
     }
   }, [pathname]);
