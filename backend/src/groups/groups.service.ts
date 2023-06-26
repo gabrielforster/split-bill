@@ -269,6 +269,39 @@ export class GroupsService {
     });
   }
 
+  async leaveGroup(groupId: string, user: RequestUser) {
+    const group = await this.prisma.group.findFirst({
+      where: {
+        id: groupId,
+      },
+    });
+
+    if (!group) {
+      throw new UnauthorizedException('Group does not exist');
+    }
+
+    if (group.createdBy === user.id) {
+      throw new UnauthorizedException('You cannot leave a group you created');
+    }
+
+    const groupUser = await this.prisma.groupUser.findFirst({
+      where: {
+        groupId,
+        userId: user.id,
+      },
+    });
+
+    if (!groupUser) {
+      throw new UnauthorizedException('You are not a member of this group');
+    }
+
+    return this.prisma.groupUser.delete({
+      where: {
+        id: groupUser.id,
+      },
+    });
+  }
+
   async removeUserFromGroup(
     groupId: string,
     userId: string,

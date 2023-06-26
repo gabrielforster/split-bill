@@ -91,6 +91,15 @@ export class GroupsController {
   }
 
   @Auth()
+  @Delete(':groupId/me')
+  async leaveGroup(
+    @Param('groupId') groupId: string,
+    @User() user: RequestUser,
+  ) {
+    return this.groupsService.leaveGroup(groupId, user);
+  }
+
+  @Auth()
   @Delete(':id/users/:userId')
   async removeUserFromGroup(
     @Param('id') groupId: string,
