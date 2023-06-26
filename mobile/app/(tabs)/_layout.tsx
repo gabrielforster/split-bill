@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs, useRouter } from 'expo-router';
 import { Button, Pressable, useColorScheme } from 'react-native';
+import { Text } from '../../components/Themed';
 
 import Colors from '../../constants/Colors';
 
@@ -53,10 +54,14 @@ export default function TabLayout() {
           tabBarLabel: "Nova transação",
           tabBarIcon: ({ color }) => <TabBarIcon name="plus-circle" color={color} />,
           headerLeft: (props) => (
-            <Button
-              title="Cancelar"
-              onPress={() => router.push('/')}
-            />
+            <Pressable onPress={() => router.push('/')}>
+              <FontAwesome
+                name="arrow-left"
+                size={20}
+                color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                style={{ marginLeft: 15 }}
+              />
+            </Pressable>
           ),
         }}
       />

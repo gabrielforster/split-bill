@@ -58,7 +58,14 @@ function App() {
             presentation: "modal",
             headerTitle: "Cadastro",
             headerLeft: () => (
-              <Button title="Voltar" onPress={() => router.back()} />
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
             ),
           }}
         />
@@ -68,7 +75,14 @@ function App() {
             presentation: "modal",
             headerTitle: "Modal",
             headerLeft: () => (
-              <Button title="Fechar" onPress={() => router.back()} />
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
             ),
           }}
         />
@@ -78,7 +92,14 @@ function App() {
             presentation: "modal",
             headerTitle: "Criar Grupo",
             headerLeft: () => (
-              <Button title="Fechar" onPress={() => router.back()} />
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
             ),
           }}
         />
@@ -88,7 +109,14 @@ function App() {
             presentation: "card",
             headerTitle: "Detalhes do Grupo",
             headerLeft: () => (
-              <Button title="Voltar" onPress={() => router.back()} />
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
             ),
             headerRight: () => (
               <Link href="/InviteUser" asChild>
@@ -113,7 +141,14 @@ function App() {
             presentation: "modal",
             headerTitle: "Convidar para o grupo",
             headerLeft: () => (
-              <Button title="Fechar" onPress={() => router.back()} />
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
             ),
           }}
         />
@@ -124,7 +159,14 @@ function App() {
             presentation: "modal",
             headerTitle: "Editar Conta",
             headerLeft: () => (
-              <Button title="Fechar" onPress={() => router.back()} />
+              <Pressable onPress={() => router.back()}>
+                <FontAwesome
+                  name="arrow-left"
+                  size={20}
+                  color={1 ? '#0359af' : Colors[colorScheme ?? 'light'].text}
+                  style={{ marginLeft: 15 }}
+                />
+              </Pressable>
             ),
           }}
         />
