@@ -78,9 +78,15 @@ export class GroupsService {
       }),
     );
 
+    const groupSummary = await this.billsService.getBillsSummaryByGroupId(
+      groupId,
+      requestUser,
+    );
+
     const result = {
       ...group,
       users,
+      summary: groupSummary,
     };
 
     return result;
