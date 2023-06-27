@@ -48,7 +48,7 @@ export function UserCard({ user, isMe, onDeleteUser }: any) {
             style={styles.fullname}
           >
             {user.fullname}
-            { isMe && ' (Voce)' }
+            { isMe && ' (Você)' }
           </Text>
           <Text style={styles.username}>{user.username}</Text>
        </View> 

@@ -67,7 +67,7 @@ export default function Invites() {
     <View style={styles.container}>
       { invites.length === 0 && (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={styles.noInvites}>Voce nao possui convites</Text>
+          <Text style={styles.noInvites}>Você nao possui convites</Text>
         </View>
       )}
       { invites.map((invite: any) => (

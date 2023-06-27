@@ -20,21 +20,21 @@ export default function InviteUser() {
 
   async function handleInvite () {
     if (!username) {
-      Alert.alert('Digite um nome de usuario valido!');
+      Alert.alert('Digite um nome de usuário valido!');
       return;
     }
 
     const usernameExists = await fetchUsernameExists();
     if (!usernameExists) {
-      Alert.alert('Usuario nao existe!');
+      Alert.alert('Usuário nao existe!');
       return;
     }
 
     try {
       const res = await api.post(`/groups/${selectedGroup.id}/users/invite/${username}`)
-      Alert.alert('Usuario convidado com sucesso!', '', [{ text: 'OK', onPress: () => router.back() }]);
+      Alert.alert('Usuário convidado com sucesso!', '', [{ text: 'OK', onPress: () => router.back() }]);
     } catch (err) {
-      Alert.alert('Ocorreu um erro ao convidar o usuario, tente novamente mais tarde.', 'Verifique se o usuario ja nao esta no grupo.')
+      Alert.alert('Ocorreu um erro ao convidar o usuário, tente novamente mais tarde.', 'Verifique se o usuário ja nao esta no grupo.')
     }
 
   }
@@ -42,12 +42,12 @@ export default function InviteUser() {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Nome de usuario</Text>
+        <Text style={styles.label}>Nome de usuário</Text>
         <TextInput
           style={styles.input}
           value={username}
           onChangeText={setUsername}
-          placeholder="Nome de usuario"
+          placeholder="Nome de usuário"
         />
       </View>
 
