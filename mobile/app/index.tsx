@@ -60,9 +60,6 @@ export default function Login () {
             />
         </View>
       </View>
-      <Pressable style={styles.recover} onPress={() => Alert.alert('Esqueceu a senha?')}>
-        <Text style={{ color: textColor }}>Esqueceu a senha?</Text>
-      </Pressable>
 			<Link href="/register" asChild>
 				<Pressable 
           style={{ 
