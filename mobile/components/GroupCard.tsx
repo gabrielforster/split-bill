@@ -9,6 +9,7 @@ import { View, Text } from "./Themed";
 export function GroupCard({ group }: any) {
   const router = useRouter();
   const colorScheme = useColorScheme();
+  const textColor = colorScheme === "dark" ? "white" : "black";
   const { setSelectedGroup } = useContext(AuthContext);
   
   const [summary, setSummary] = useState(0);
@@ -33,15 +34,15 @@ export function GroupCard({ group }: any) {
 
       <View style={styles.groupSummary}>
         <FontAwesome
-          name={summary >= 0 ? "arrow-up" : "arrow-down"}
-          color={summary >= 0 ? "green" : "red"}
+          name={summary === 0 ? 'minus' : summary > 0 ? "arrow-up" : "arrow-down"}
+          color={summary === 0 ? textColor : summary > 0 ? "green" : "red"}
           size={20}
         />
         <Text 
           style={{ 
             ...styles.summary,
             marginHorizontal: 5,
-            color: summary >= 0 ? "green" : "red",
+            color: (summary === 0 ? textColor : summary > 0 ? "green" : "red")
           }}
 
         >

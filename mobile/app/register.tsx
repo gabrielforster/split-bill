@@ -79,7 +79,10 @@ export default function RegisterPage () {
           style={styles.container}
         >
         <View style={styles.formContainer}>
-          <FontAwesome style={styles.icon} name="user" size={80} color={textColor} />
+         { Platform.OS === 'ios'
+           ? <FontAwesome style={styles.icon} name="user" size={80} color={textColor} />
+           : null
+         }
 
           <View style={styles.inputContainer}>
             <Text style={{ ...styles.inputLabel, color: textColor }}>Digite seu nome de usuario</Text>

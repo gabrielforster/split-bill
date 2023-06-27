@@ -23,8 +23,13 @@ export default function Login () {
 
   useEffect(() => {
       if (userToken) {
-        router.replace('/Home');
         fetchUserData()
+        async () => {
+          await new Promise(resolve => {
+            setTimeout(resolve, 700); 
+          })
+        }
+        router.push('/Home');
         return
       }
   }, [userToken])

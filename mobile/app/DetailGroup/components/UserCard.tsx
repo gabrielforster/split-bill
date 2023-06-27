@@ -7,7 +7,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import { formatCurrency } from "../../../utils";
 import { api } from "../../../utils/api";
 
-export function UserCard({ user, isOwner, onDeleteUser }: any) {
+export function UserCard({ user, isMe, onDeleteUser }: any) {
   const router = useRouter();
   const { selectedGroup } = useContext(AuthContext)
 
@@ -48,7 +48,7 @@ export function UserCard({ user, isOwner, onDeleteUser }: any) {
             style={styles.fullname}
           >
             {user.fullname}
-            { isOwner && ' (Voce)' }
+            { isMe && ' (Voce)' }
           </Text>
           <Text style={styles.username}>{user.username}</Text>
        </View> 
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   fullname: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   username: {

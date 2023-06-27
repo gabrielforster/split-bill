@@ -78,10 +78,6 @@ export default function DetailGroup (){
           Criado por: { owner?.fullname }
         </Text>
 
-        <Text style={styles.groupName}>
-          { group.name }
-        </Text>
-        
          { group.description &&
            <Text
             style={{
@@ -98,37 +94,38 @@ export default function DetailGroup (){
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.3)" />
 
-      <View style={styles.total}>
-        <FontAwesome
-          name={summaryData.income > summaryData.outcome ? 'arrow-up' : 'arrow-down'}
-          size={24}
-          color={(summaryData.income - summaryData.outcome) > 0 ? 'green' : 'red'}
-        />
-        <Text
-          style={{
-            ...styles.totalText,
-            color: (summaryData.income - summaryData.outcome) > 0 ? 'green' : 'red'
-          }}
-        >
-          { formatCurrency((summaryData.income - summaryData.outcome) / 100)}
-        </Text>
-      </View>
+      <View style={styles.summary}>
+        <Text style={styles.title}>Saldo do grupo</Text>
+        <View style={styles.total}>
+          <FontAwesome
+            name={summaryData.income > summaryData.outcome ? 'arrow-up' : 'arrow-down'}
+            size={24}
+            color={(summaryData.income - summaryData.outcome) > 0 ? 'green' : 'red'}
+          />
+          <Text
+            style={{
+              ...styles.totalText,
+              color: (summaryData.income - summaryData.outcome) > 0 ? 'green' : 'red'
+            }}
+          >
+            { formatCurrency((summaryData.income - summaryData.outcome) / 100)}
+          </Text>
+        </View>
+     </View>
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.3)" />
       
       <View style={styles.header}>
         <Text
-          style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              marginBottom: 10,
-          }}
+          style={styles.title}
+        >
+          {bills?.length ?? 0}
+        </Text>
+        <Text
+          style={{ ...styles.title, marginLeft: 5 }}
         >
           Transações
         </Text>
-        <Pressable onPress={() => router.push('/ListGroupUsers')}>
-          <FontAwesome name="users" size={24} color={Colors[colorScheme ?? 'light'].tint} />
-        </Pressable>
       </View>
       <ScrollView style={{ width: '100%'}}>
         <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
@@ -179,6 +176,11 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  summary: {
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   total: {
     flexDirection: 'row',
     width: '80%',
@@ -197,7 +199,13 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 10,
   },
   bill: {
     width: '90%',

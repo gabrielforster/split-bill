@@ -2,20 +2,33 @@
 import { useURL } from 'expo-linking';
 import { usePathname, useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, useColorScheme } from 'react-native';
 import { GroupCard } from '../../components/GroupCard';
 
 import { Text, View } from '../../components/Themed';
+import Colors from '../../constants/Colors';
 import { AuthContext } from '../../contexts/AuthContext';
 import { api } from '../../utils/api';
 
 function GroupsWrapper(groups: any) {
   return groups.length === 0 ? (
-    <Text style={styles.title}>Você não está em nenhum grupo</Text>
+        <Text style={styles.title}>Você não está em nenhum grupo</Text>
   ) : (
-      groups.map((group: any) => {
-        return <GroupCard key={group.id} group={group}/>
-      })
+    <ScrollView style={{ width: '100%'}}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
+        {
+          groups.map((group: any) => {
+            return <GroupCard key={group.id} group={group}/>
+          })
+        }
+      </View>
+    </ScrollView>
   )
 }
 
@@ -49,8 +62,6 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Seus Grupos!</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {
         isLoading 
         ? <ActivityIndicator size="large" />
@@ -62,17 +73,11 @@ export default function TabOneScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 });

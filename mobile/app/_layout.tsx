@@ -18,7 +18,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: 'home',
+  initialRouteName: '(tabs)',
 };
 
 export default function RootLayout() {
@@ -56,6 +56,7 @@ function App() {
           name="register"
           options={{
             presentation: "modal",
+            headerTitleAlign: "center",
             headerTitle: "Cadastro",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
@@ -73,6 +74,7 @@ function App() {
           name="modal"
           options={{
             presentation: "modal",
+            headerTitleAlign: "center",
             headerTitle: "Modal",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
@@ -90,6 +92,7 @@ function App() {
           name="CreateGroup"
           options={{
             presentation: "modal",
+            headerTitleAlign: "center",
             headerTitle: "Criar Grupo",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
@@ -107,6 +110,7 @@ function App() {
           name="DetailGroup/[id]"
           options={{
             presentation: "card",
+            headerTitleAlign: "center",
             headerTitle: "Detalhes do Grupo",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
@@ -119,18 +123,32 @@ function App() {
               </Pressable>
             ),
             headerRight: () => (
-              <Link href="/InviteUser" asChild>
+            <>
+              <Link href="/ListGroupUsers" asChild>
                 <Pressable>
-                  {({ pressed }) => (
+                {({ pressed }) => (
                     <FontAwesome
-                      name="user-plus"
-                      size={20}
-                      color={Colors[colorScheme ?? 'light'].text}
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                    />
+                    name="users"
+                    size={20}
+                    color={Colors[colorScheme ?? 'light'].text}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
                   )}
                 </Pressable>
               </Link>
+              <Link href="/InviteUser" asChild>
+                <Pressable>
+                {({ pressed }) => (
+                    <FontAwesome
+                    name="user-plus"
+                    size={20}
+                    color={Colors[colorScheme ?? 'light'].text}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                  )}
+                </Pressable>
+              </Link>
+            </>
             ),
           }}
         />
@@ -139,6 +157,7 @@ function App() {
           name="ListGroupUsers"
           options={{
             presentation: "modal",
+            headerTitleAlign: "center",
             headerTitle: "Membros do Grupo",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
@@ -157,6 +176,7 @@ function App() {
           name="InviteUser"
           options={{
             presentation: "modal",
+            headerTitleAlign: "center",
             headerTitle: "Convidar para o grupo",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
@@ -175,6 +195,7 @@ function App() {
           name="Invites"
           options={{
             presentation: "modal",
+            headerTitleAlign: "center",
             headerTitle: "Seus convites",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>
@@ -193,6 +214,7 @@ function App() {
           name="AccountModal"
           options={{
             presentation: "modal",
+            headerTitleAlign: "center",
             headerTitle: "Editar Conta",
             headerLeft: () => (
               <Pressable onPress={() => router.back()}>

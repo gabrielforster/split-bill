@@ -47,7 +47,7 @@ export default function AccountScreen() {
       setOutcome(user.summary.outcome / 100);
       setSummary((user.summary.income - user.summary.outcome) / 100);
     }
-  }, [])
+  }, [user])
   
   return isLoading 
   ? (
@@ -65,11 +65,11 @@ export default function AccountScreen() {
       </View>
 
       <View style={styles.total}>
-        <FontAwesome name={summary >= 0 ? "arrow-up" : "arrow-down"} size={20} color={summary >= 0 ? 'green' : 'red'} />
+        <FontAwesome name={summary === 0 ? 'minus' : summary >= 0 ? "arrow-up" : "arrow-down"} size={20} color={summary >= 0 ? 'green' : 'red'} />
         <Text
           style={{
             ...styles.totalText,
-            color:summary >= 0 ? 'green' : 'red'
+            color:summary === 0 ? textColor : summary > 0 ?  'green' : 'red'
           }}
         >
           {formatCurrency(summary)}

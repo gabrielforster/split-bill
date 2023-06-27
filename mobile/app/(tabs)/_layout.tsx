@@ -52,6 +52,7 @@ export default function TabLayout() {
         options={{
           title: "Nova transação",
           tabBarLabel: "Nova transação",
+          headerTitleAlign: "center",
           tabBarIcon: ({ color }) => <TabBarIcon name="plus-circle" color={color} />,
           headerLeft: (props) => (
             <Pressable onPress={() => router.push('/')}>
@@ -72,20 +73,7 @@ export default function TabLayout() {
           title: "Conta",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
           tabBarLabel: "Conta",
-          headerRight: () => (
-            <Link href="/AccountModal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="pencil"
-                    size={20}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          headerTitleAlign: "center",
         }}
       />
     </Tabs>

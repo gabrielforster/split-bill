@@ -7,7 +7,7 @@ import { api } from "../utils/api";
 import { UserCard } from "./DetailGroup/components/UserCard";
 
 export default function ListGroupUsers() {
-  const { selectedGroup, fetchGroup } = useContext(AuthContext);
+  const { selectedGroup, fetchGroup, userData } = useContext(AuthContext);
   const colorScheme = useColorScheme();
   const textColor = colorScheme === 'dark' ? 'white' : 'black';
 
@@ -28,8 +28,7 @@ export default function ListGroupUsers() {
       </View> )
   : (
     <View style={styles.container}>
-      <Text style={styles.title}>Usuarios</Text>
-      { selectedGroup.users && selectedGroup.users.map((user: any) => <UserCard key={user.id} user={user} isOwner={selectedGroup.createdBy === user.id} onDeleteUser={handleRemoveUser} />)}
+      { selectedGroup.users && selectedGroup.users.map((user: any) => <UserCard key={user.id} user={user} isMe={user.id === userData.id} onDeleteUser={handleRemoveUser} />)}
     </View>
   )
 }
